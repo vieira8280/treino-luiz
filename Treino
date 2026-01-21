@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#e63946">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Treino Luiz Lopes</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <header>8 SEMANAS LUIZ LOPES</header>
+  
+  <nav id="mainNav">
+    <button onclick="showTab('dash', this)" class="active">DASH</button>
+    <button onclick="showTab('Sem1', this)">Sem 1</button>
+    <button onclick="showTab('Sem2', this)">Sem 2</button>
+    <button onclick="showTab('Sem3', this)">Sem 3</button>
+    <button onclick="showTab('Sem4', this)">Sem 4</button>
+    <button onclick="showTab('Sem5', this)">Sem 5</button>
+    <button onclick="showTab('Sem6', this)">Sem 6</button>
+    <button onclick="showTab('Sem7', this)">Sem 7</button>
+    <button onclick="showTab('Sem8', this)">Sem 8</button>
+    <button onclick="showTab('cardio', this)">Cardio</button>
+    <button onclick="showTab('dieta', this)">Dieta</button>
+  </nav>
+  
+  <main>
+    <section id="dash" class="active">
+      <div class="card">
+        <h2>Status Geral</h2>
+        <p>Peso Atual: <input type="number" id="peso" step="0.1"> kg</p>
+        <p>Semana: <input type="number" id="semana" min="1" max="8"> / 8</p>
+        <p>Fase: <strong><span id="fase"></span></strong></p>
+      </div>
+      <div class="card">
+        <h2>Registrar Peso</h2>
+        <input type="number" id="novoPeso" placeholder="Peso (kg)" step="0.1">
+        <button onclick="registrarPeso()">Registrar</button>
+        <ul id="listaPeso"></ul>
+      </div>
+      <div class="card">
+        <h2>Progresso Total</h2>
+        <div class="progress"><span id="progressGeral"></span></div>
+        <p id="percentGeral">0%</p>
+      </div>
+    </section>
+
+    <!-- Containers Automáticos das Semanas -->
+    <section id="Sem1"><div class="card"><h2>Semana 1</h2><div class="dias-grid" data-semana="1"></div><div class="progress"><span id="progSem1"></span></div><p id="txtSem1">0%</p></div></section>
+    <section id="Sem2"><div class="card"><h2>Semana 2</h2><div class="dias-grid" data-semana="2"></div><div class="progress"><span id="progSem2"></span></div><p id="txtSem2">0%</p></div></section>
+    <section id="Sem3"><div class="card"><h2>Semana 3</h2><div class="dias-grid" data-semana="3"></div><div class="progress"><span id="progSem3"></span></div><p id="txtSem3">0%</p></div></section>
+    <section id="Sem4"><div class="card"><h2>Semana 4</h2><div class="dias-grid" data-semana="4"></div><div class="progress"><span id="progSem4"></span></div><p id="txtSem4">0%</p></div></section>
+    <section id="Sem5"><div class="card"><h2>Semana 5</h2><div class="dias-grid" data-semana="5"></div><div class="progress"><span id="progSem5"></span></div><p id="txtSem5">0%</p></div></section>
+    <section id="Sem6"><div class="card"><h2>Semana 6</h2><div class="dias-grid" data-semana="6"></div><div class="progress"><span id="progSem6"></span></div><p id="txtSem6">0%</p></div></section>
+    <section id="Sem7"><div class="card"><h2>Semana 7</h2><div class="dias-grid" data-semana="7"></div><div class="progress"><span id="progSem7"></span></div><p id="txtSem7">0%</p></div></section>
+    <section id="Sem8"><div class="card"><h2>Semana 8</h2><div class="dias-grid" data-semana="8"></div><div class="progress"><span id="progSem8"></span></div><p id="txtSem8">0%</p></div></section>
+
+    <section id="cardio">
+      <div class="card">
+        <h2>Cardio</h2>
+        <label><input type="checkbox" class="cardio" data-key="c1"> Caminhada</label>
+        <label><input type="checkbox" class="cardio" data-key="c2"> Corrida</label>
+        <label><input type="checkbox" class="cardio" data-key="c3"> Escada</label>
+        <div class="progress"><span id="progCardio"></span></div>
+        <p id="txtCardio">0%</p>
+      </div>
+    </section>
+
+    <section id="dieta">
+      <div class="card">
+        <h2>Dieta</h2>
+        <textarea id="dietaCafe" placeholder="Café..."></textarea>
+        <textarea id="dietaAlmoco" placeholder="Almoço..."></textarea>
+        <textarea id="dietaJantar" placeholder="Jantar..."></textarea>
+        <button onclick="salvarDieta()">Salvar Dieta</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+  </script>
+</body>
+</html>
+{
+  "name": "Treino Luiz Lopes",
+  "short_name": "TreinoLL",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#e63946",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
+const CACHE = 'v1';
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', './index.html', './css/styles.css', './js/app.js'])));
+});
+self.addEventListener('fetch', e => {
+  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+});
